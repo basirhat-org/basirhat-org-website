@@ -1,0 +1,28 @@
+on:
+  push:
+    branches:
+    - main
+      
+name: 🚀 Deploy Website on Server (Production)
+jobs:
+    build-and-deploy:
+      runs-on: ubuntu-latest
+  
+      steps:
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v3
+      - name: 🛠️ Stop Server, Sync Files, Build and Restart Server
+        uses: easingthemes/ssh-deploy@main
+        with:
+            SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY_MAIN }}
+            REMOTE_HOST: ${{ secrets.SSH_HOST_MAIN }}
+            REMOTE_USER: ${{ secrets.SSH_USER_MAIN }}
+            TARGET: ${{ secrets.SSH_TARGET_MAIN }}
+            SCRIPT_BEFORE: |
+              pm2 stop all
+            SCRIPT_AFTER: |
+              cd ${{ secrets.SSH_TARGET_MAIN }}
+              npm install
+              npm run build
+              pm2 restart all
+              echo $RSYNC_STDOUT
