@@ -11,21 +11,19 @@ jobs:
       - name: 🛎️ Checkout
         uses: actions/checkout@v3
 
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          
+      - name: 🛠️ Run Build Process
+        run: |
+          npm install
+          npm run build
+      
       - name: 📂 Sync Files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_HOST_MAIN }}
           username: ${{ secrets.FTP_USER_MAIN }}
           password: ${{ secrets.FTP_PASS_MAIN }}
-          
-      - name: 🛠️ Run Build Process
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST_MAIN }}
-          username: ${{ secrets.SSH_USER_MAIN }}
-          password: ${{ secrets.SSH_PASS_MAIN }}
-          debug: true
-          script: |
-            cd ${{ secrets.SSH_TARGET_MAIN }}
-            npm install
-            npm run build
