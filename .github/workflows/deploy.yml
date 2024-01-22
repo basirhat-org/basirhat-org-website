@@ -1,7 +1,6 @@
 on:
   push:
-    branches:
-    - main
+    branches: [ main ]
       
 name: 🚀 Deploy Website on Server (Production)
 jobs:
@@ -11,7 +10,15 @@ jobs:
       steps:
       - name: 🛎️ Checkout
         uses: actions/checkout@v3
-      - name: 🛠️ Stop Running Server
+
+      - name: 📂 Sync Files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_HOST_MAIN }}
+          username: ${{ secrets.FTP_USER_MAIN }}
+          password: ${{ secrets.FTP_PASS_MAIN }}
+          
+      - name: 🛠️ Run Build Process
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST_MAIN }}
@@ -20,4 +27,5 @@ jobs:
           debug: true
           script: |
             cd ${{ secrets.SSH_TARGET_MAIN }}
-            pm2 status
+            npm install
+            npm run build
