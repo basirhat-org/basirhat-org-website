@@ -17,5 +17,6 @@ jobs:
           host: ${{ secrets.SSH_HOST_MAIN }}
           username: ${{ secrets.SSH_USER_MAIN }}
           password: ${{ secrets.SSH_PASS_MAIN }}
+          debug: true
           script: |
             whoami
