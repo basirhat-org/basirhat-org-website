@@ -19,4 +19,5 @@ jobs:
           password: ${{ secrets.SSH_PASS_MAIN }}
           debug: true
           script: |
-            whoami
+            ls
+            cd ${{ secrets.SSH_TARGET_MAIN }}
