@@ -11,18 +11,11 @@ jobs:
       steps:
       - name: 🛎️ Checkout
         uses: actions/checkout@v3
-      - name: 🛠️ Stop Server, Sync Files, Build and Restart Server
-        uses: easingthemes/ssh-deploy@main
+      - name: 🛠️ Stop Running Server
+        uses: appleboy/ssh-action@v1.0.3
         with:
-            SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY_MAIN }}
-            REMOTE_HOST: ${{ secrets.SSH_HOST_MAIN }}
-            REMOTE_USER: ${{ secrets.SSH_USER_MAIN }}
-            TARGET: ${{ secrets.SSH_TARGET_MAIN }}
-            SCRIPT_BEFORE: |
-              pm2 stop all
-            SCRIPT_AFTER: |
-              cd ${{ secrets.SSH_TARGET_MAIN }}
-              npm install
-              npm run build
-              pm2 restart all
-              echo $RSYNC_STDOUT
+          host: ${{ secrets.SSH_HOST_MAIN }}
+          username: ${{ secrets.SSH_USER_MAIN }}
+          password: ${{ secrets.SSH_PASS_MAIN }}
+          script: |
+            pm2 stop all
