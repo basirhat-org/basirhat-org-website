@@ -12,10 +12,10 @@ export const siteConfig = {
 			label: "About",
 			href: "/about",
 		},
-		// {
-		// 	label: "Gallery",
-		// 	href: "/gallery",
-		// },
+		{
+			label: "Gallery",
+			href: "/gallery",
+		},
 		
 	],
 	navMenuItems: [
@@ -27,10 +27,10 @@ export const siteConfig = {
 			label: "About",
 			href: "/about",
 		},
-		// {
-		// 	label: "Gallery",
-		// 	href: "/gallery",
-		// },
+		{
+			label: "Gallery",
+			href: "/gallery",
+		},
 	],
 	links: {
 		github: "https://github.com/basirhat-org/",
