@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "dev-start": "PORT=3001 next start"
+    "dev-start": "next start -p 3001"
   },
   "dependencies": {
     "@nextui-org/button": "2.0.26",
