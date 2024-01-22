@@ -19,5 +19,5 @@ jobs:
           password: ${{ secrets.SSH_PASS_MAIN }}
           debug: true
           script: |
-            ls
             cd ${{ secrets.SSH_TARGET_MAIN }}
+            pm2 status
