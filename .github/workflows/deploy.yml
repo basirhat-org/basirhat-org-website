@@ -42,15 +42,18 @@ jobs:
 
     - name: 👷 Restart Server (Production)
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      run: |
-        sudo apt-get install -y sshpass
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_KEY_MAIN }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H ${{ secrets.SSH_HOST_MAIN }} >> ~/.ssh/known_hosts
-        echo "StrictHostKeyChecking no" >> ~/.ssh/config
-        sudo apt-get install -y openssh-client
-        sshpass -p "${{ secrets.SSH_PASS_MAIN }}" ssh ${{ secrets.SSH_USER_MAIN }}@${{ secrets.SSH_HOST_MAIN }} "cd ${{ secrets.SSH_TARGET_MAIN }}; pm2 stop all; npm install; pm2 restart all"
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SSH_HOST_MAIN }}
+        username: ${{ secrets.SSH_USER_MAIN }}
+        password: ${{ secrets.SSH_PASS_MAIN }}
+        script: |
+          export NVM_DIR=~/.nvm
+          source ~/.nvm/nvm.sh
+          pm2 stop all
+          cd ${{ secrets.SSH_TARGET_MAIN }}
+          npm install
+          pm2 restart all
 
     - name: 👷 Restart Server (Development)
       if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
@@ -62,4 +65,7 @@ jobs:
         script: |
           export NVM_DIR=~/.nvm
           source ~/.nvm/nvm.sh
-          npm --help
+          pm2 stop all
+          cd ${{ secrets.SSH_TARGET_DEV }}
+          npm install
+          pm2 restart all
