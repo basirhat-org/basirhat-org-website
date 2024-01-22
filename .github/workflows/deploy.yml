@@ -18,4 +18,4 @@ jobs:
           username: ${{ secrets.SSH_USER_MAIN }}
           password: ${{ secrets.SSH_PASS_MAIN }}
           script: |
-            pm2 stop all
+            whoami
